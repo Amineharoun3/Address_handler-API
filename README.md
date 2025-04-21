@@ -39,10 +39,21 @@ mon repot git : git clone git@github.com:Amineharoun3/Address_handler-API.git
 
 ## Deploiement
 
+avec docker
+
 ```bash
 
 $ docker-compose build
 $ docker-compose up
+
+```
+
+en local
+
+```bash
+
+$ npm run start:dev
+
 
 ```
 
