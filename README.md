@@ -23,46 +23,87 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Address API
+API REST dockerisée pour enregistrer des adresses via l'API BAN et consulter les risques associés via l'API Géorisques.
+Prérequis
 
-## Project setup
+# Prerequis
+
+Node.js 16+
+Docker
+Docker Compose
+
+#Installation
+mon repot git : git clone git@github.com:Amineharoun3/Address_handler-API.git
+
+
+## Deploiement
 
 ```bash
-$ npm install
+
+$ docker-compose build
+$ docker-compose up
+
 ```
 
-## Compile and run the project
+## L'API sera disponible sur http://localhost:8000.
+
+Endpoints
+POST /api/addresses/
+Enregistre une adresse via l'API BAN.
+Payload:
+{ "q": "8 bd du port" }
+
+Réponses
 
 ```bash
-# development
-$ npm run start
+200 OK:{
+  "id": 1,
+  "label": "8 Boulevard du Port 80000 Amiens",
+  "housenumber": "8",
+  "street": "Boulevard du Port",
+  "postcode": "80000",
+  "citycode": "80021",
+  "latitude": 49.897443,
+  "longitude": 2.290084
+}
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
+400 Bad Request:{ "error": "Le champ 'q' est requis et doit être une chaîne non vide." }
 
-## Run tests
 
+404 Not Found:{ "error": "Adresse non trouvée. Aucun résultat ne correspond à votre recherche." }
+
+
+500 Internal Server Error:{ "error": "Erreur serveur : impossible de contacter l'API externe." }
+
+
+## GET /api/addresses/{id}/risks/
+
+Récupère les risques associés à une adresse via l'API Géorisques.
+Réponses:
+200 OK:{ /* JSON brut retourné par https://georisques.gouv.fr/api/v1/resultats_rapport_risque */ }
+
+
+404 Not Found:{ "error": "Adresse non trouvée." }
+
+
+500 Internal Server Error:{ "error": "Erreur serveur : échec de la récupération des données de Géorisques." }
+
+
+
+## Note sur l'API Géorisques
+L'endpoint initial https://www.georisques.gouv.fr/api/v3/v1/resultats_rapport_risque renvoyait une erreur 404. Après investigation, l'endpoint correct est https://georisques.gouv.fr/api/v1/resultats_rapport_risque, qui est utilisé dans cette implémentation.
+
+## Tests
+Exécutez les tests unitaires avec :
 ```bash
-# unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+Variables d'environnement
+Voir .env.example :
+TYPEORM_CONNECTION=sqlite
+TYPEORM_DATABASE=/data/db.sqlite
 ```bash
 $ npm install -g @nestjs/mau
 $ mau deploy
