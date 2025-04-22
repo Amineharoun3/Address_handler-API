@@ -59,6 +59,8 @@ $ npm run start:dev
 
 ## L'API sera disponible sur http://localhost:8000.
 
+une documentation swagger est ealement disponible sur http://localhost:8000/api-docs
+
 Endpoints
 POST /api/addresses/
 Enregistre une adresse via l'API BAN.
